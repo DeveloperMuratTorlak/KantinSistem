@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechModern Kantin Sistemi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Bildirim kapsayıcı -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <div class="background-effect"></div> <!-- Hareketli arka plan efekti -->
+    <div id="login-container">
+        <h2>Akıllı Kantin Sistemine Hoş Geldiniz.</h2>
+        <select id="user-type">
+            <option value="student">Öğrenci</option>
+            <option value="staff">Personel</option>
+            <option value="admin">Yönetici</option>
+            <option value="parent">Veli</option>
+        </select>
+        <input type="text" id="user-id" placeholder="ID/Okul No">
+        <input type="password" id="user-password" placeholder="Şifre">
+        <button onclick="login()">Giriş Yap</button>
+    </div>
+
+    <div id="student-container" class="hidden">
+        <h2>Öğrenci Paneli</h2>
+        <p>Hoş geldiniz, <span id="student-name"></span>!</p>
+        <p>Bakiye: <span id="student-balance"></span> TL</p>
+        <button onclick="showProducts()">Menü</button>
+        <button onclick="showStudentTransactions()">Son İşlemlerim</button>
+        <button onclick="showStudentProfile()">Profilim</button>
+        <button onclick="logout()">Çıkış Yap</button>
+        <div id="products-display" class="hidden"></div>
+        <div id="cart-section" class="hidden">
+            <h3>Sepet</h3>
+            <div id="cart-items"></div>
+            <p>Toplam: <span id="cart-total">0</span> TL</p>
+            <button onclick="checkout()">Satın Al</button>
+        </div>
+        <div id="student-transactions" class="hidden"></div>
+        <div id="student-profile-section" class="hidden">
+            <h3>Profil Bilgileri</h3>
+            <p>Ad: <span id="student-profile-name"></span></p>
+            <p>ID: <span id="student-profile-id"></span></p>
+            <p>Bakiye: <span id="student-profile-balance"></span> TL</p>
+            <p>Veli: <span id="student-profile-parent"></span></p>
+            <p>Yasaklı Ürünler: <span id="student-profile-banned"></span></p>
+            <p>Limit: <span id="student-profile-limit"></span></p>
+        </div>
+    </div>
+
+    <div id="staff-container" class="hidden">
+        <h2>Personel Paneli</h2>
+        <p>Hoş geldiniz, <span id="staff-name"></span>!</p>
+        <button onclick="showStock()">Kantin Stok Durumu</button>
+        <button onclick="showSalesReports('staff')">Satış Raporları</button>
+        <button onclick="showStaffProfile()">Profilim</button>
+        <button onclick="logout()">Çıkış Yap</button>
+        <div id="stock-display" class="hidden"></div>
+        <div id="staff-sales-reports" class="hidden">
+            <h3>Satış Raporları</h3>
+            <select id="staff-report-period">
+                <option value="daily">Günlük</option>
+                <option value="weekly">Haftalık</option>
+                <option value="monthly">Aylık</option>
+            </select>
+            <button onclick="loadSalesReports('staff')">Rapor Yükle</button>
+            <div id="staff-report-details">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th>Tutar</th>
+                            <th>Tarih ve Saat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staff-sales-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="staff-profile-section" class="hidden">
+            <h3>Profil Bilgileri</h3>
+            <p>Ad: <span id="staff-profile-name"></span></p>
+            <p>ID: <span id="staff-profile-id"></span></p>
+        </div>
+    </div>
+
+    <div id="admin-container" class="hidden">
+        <h2>Yönetici Paneli</h2>
+        <p>Hoş geldiniz, <span id="admin-name"></span>!</p>
+        <button onclick="showAdminStock()">Kantin Ürün Bilgileri</button>
+        <button onclick="showIndividualProfitSection()">Ürün Kar Ayarlama</button>
+        <button onclick="showUserDetailsSection()">Kullanıcılar</button>
+        <button onclick="showAddRemoveUserSection()">Kullanıcı Ekle/Sil</button>
+        <button onclick="showPerformanceIndicators()">Performans Göstergeleri</button>
+        <button onclick="showSalesReports('admin')">Satış Raporları</button>
+        <button onclick="showCostAnalysis()">Maliyet Analizi</button>
+        <button onclick="showAdminProfile()">Profilim</button>
+        <button onclick="logout()">Çıkış Yap</button>
+        <div id="admin-stock-display" class="hidden"></div>
+        <div id="individual-profit-section" class="hidden">
+            <h3>Bireysel Kâr Oranları</h3>
+            <div id="profit-inputs"></div>
+            <button onclick="applyIndividualProfit()">Uygula</button>
+        </div>
+        <div id="user-details-section" class="hidden">
+            <h3>Kullanıcılar</h3>
+            <div class="user-list-container">
+                <div id="user-buttons" class="user-list"></div>
+                <div id="user-details" class="user-details-panel hidden"></div>
+            </div>
+        </div>
+        <div id="add-remove-user-section" class="hidden">
+            <h3>Kullanıcı Ekle/Sil</h3>
+            <div class="form-container">
+                <div class="form-section">
+                    <h4>Yeni Kullanıcı Ekle</h4>
+                    <input type="text" id="new-user-name" placeholder="Ad Soyad">
+                    <select id="new-user-type">
+                        <option value="student">Öğrenci</option>
+                        <option value="staff">Personel</option>
+                    </select>
+                    <input type="text" id="new-user-parent" placeholder="Veli Ad Soyad" class="student-only hidden">
+                    <input type="password" id="new-user-password" placeholder="Şifre">
+                    <button onclick="addNewUser()">Ekle</button>
+                </div>
+                <div class="form-section">
+                    <h4>Kullanıcı Sil</h4>
+                    <input type="text" id="remove-user-id" placeholder="ID/Okul No">
+                    <input type="password" id="remove-user-password" placeholder="Şifre">
+                    <button onclick="removeUser()">Sil</button>
+                </div>
+            </div>
+        </div>
+        <div id="performance-indicators" class="hidden">
+            <h3>Performans Göstergeleri</h3>
+            <div id="top-products" class="indicator-section"></div>
+            <div id="top-profit" class="indicator-section"></div>
+        </div>
+        <div id="admin-sales-reports" class="hidden">
+            <h3>Satış Raporları</h3>
+            <select id="admin-report-period">
+                <option value="daily">Günlük</option>
+                <option value="weekly">Haftalık</option>
+                <option value="monthly">Aylık</option>
+            </select>
+            <button onclick="loadSalesReports('admin')">Rapor Yükle</button>
+            <div id="admin-report-details">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th>Tutar</th>
+                            <th>Tarih ve Saat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-sales-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="cost-analysis" class="hidden">
+            <h3>Maliyet Analizi</h3>
+            <div id="cost-details">
+                <div id="total-revenue"></div>
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Geliş Fiyatı</th>
+                            <th>Satış Fiyatı</th>
+                            <th>Satılan Adet</th>
+                            <th>Toplam Kâr</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cost-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="admin-profile-section" class="hidden">
+            <h3>Profil Bilgileri</h3>
+            <p>Ad: <span id="admin-profile-name"></span></p>
+            <p>ID: <span id="admin-profile-id"></span></p>
+        </div>
+        <div id="change-password-section" class="hidden">
+            <h3>Şifre Değiştir</h3>
+            <input type="password" id="new-password" placeholder="Yeni Şifre">
+            <button onclick="changePassword()">Değiştir</button>
+        </div>
+    </div>
+
+    <div id="parent-container" class="hidden">
+        <h2>Veli Paneli</h2>
+        <p>Öğrenci: <span id="parent-student-name"></span></p>
+        <p>Bakiye: <span id="parent-student-balance"></span> TL</p>
+        <button onclick="showParentTransactions()">Son İşlemler</button>
+        <button onclick="showTransferSection()">Para Yükle</button>
+        <button onclick="showBanProductSection()">Ürün Yasakla</button>
+        <button onclick="showLimitSection()">Limit Belirle</button>
+        <button onclick="logout()">Çıkış Yap</button>
+        <div id="parent-transactions" class="hidden"></div>
+        <div id="transfer-section" class="hidden">
+            <h3>Para Yükle</h3>
+            <input type="number" id="transfer-amount" placeholder="Miktar (TL)">
+            <button onclick="transfer()">Yükle</button>
+        </div>
+        <div id="ban-product-section" class="hidden">
+            <h3>Ürün Yasakla</h3>
+            <div id="ban-product-list"></div>
+            <button onclick="banProducts()">Yasakla</button>
+        </div>
+        <div id="limit-section" class="hidden">
+            <h3>Harcama Limiti Belirle</h3>
+            <input type="number" id="limit-amount" placeholder="Limit (TL)">
+            <select id="limit-type">
+                <option value="daily">Günlük</option>
+                <option value="weekly">Haftalık</option>
+                <option value="monthly">Aylık</option>
+            </select>
+            <button onclick="setLimit()">Kaydet</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

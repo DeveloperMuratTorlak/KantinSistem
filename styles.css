@@ -1,0 +1,339 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #0F1A2B; /* Derin lacivert */
+    color: #E0E7FF; /* Açık gri-mavi */
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow-y: auto;
+    font-size: 18px;
+}
+
+/* Yeni arka plan efekti: Holografik Dalga */
+.background-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.background-effect::before,
+.background-effect::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 30px,
+        rgba(0, 212, 255, 0.2) 30px, /* Neon mavi dalga */
+        rgba(0, 212, 255, 0.2) 32px,
+        transparent 32px,
+        transparent 60px,
+        rgba(0, 255, 153, 0.2) 60px, /* Neon yeşil dalga */
+        rgba(0, 255, 153, 0.2) 62px
+    );
+    filter: blur(5px); /* Holografik bulanıklık */
+    animation: holographicWave 12s linear infinite;
+    opacity: 0.5;
+}
+
+.background-effect::after {
+    animation: holographicWave 15s linear infinite reverse; /* Farklı hız ve yön */
+    opacity: 0.3;
+    filter: blur(8px); /* Daha fazla bulanıklık */
+}
+
+/* Parlama efekti için ek katman */
+.background-effect::before {
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3), 0 0 30px rgba(0, 255, 153, 0.3); /* Parlama */
+}
+
+@keyframes holographicWave {
+    0% {
+        transform: translateX(-50%) translateY(-50%) rotate(0deg);
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(50%) translateY(50%) rotate(360deg);
+        opacity: 0.5;
+    }
+}
+
+/* Bildirim kapsayıcı */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Ortalanmış */
+    z-index: 1000; /* Diğer elementlerin üstünde */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Bildirimler arasında boşluk */
+}
+
+/* Bildirim stili */
+.notification {
+    background: #1A2F3B; /* Temaya uyumlu koyu mavi ton */
+    color: #E0E7FF; /* Açık gri-mavi metin */
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #00D4FF; /* Neon mavi kenar */
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); /* Hafif parlama */
+    font-size: 16px;
+    min-width: 200px;
+    max-width: 400px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-100%); /* Başlangıçta ekranın üstünde */
+    animation: slideDown 4s ease-in-out forwards; /* 4 saniyelik animasyon */
+}
+
+/* Animasyon: Bildirim üstten kayarak gelir ve kaybolur */
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+h2 {
+    color: #00FF99; /* Neon yeşil */
+    font-size: 40px;
+}
+
+h3 {
+    color: #00FF99;
+    font-size: 32px;
+}
+
+h4 {
+    color: #00FF99;
+    font-size: 28px;
+}
+
+button {
+    background: #00D4FF; /* Neon mavi */
+    color: #0F1A2B;
+    border: none;
+    padding: 12px 24px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 22px;
+}
+
+button:hover {
+    background: #00B8D4;
+}
+
+select, option {
+    font-family: Arial, sans-serif;
+    background-color: #0F1A2B;
+    color: #E0E7FF;
+    font-size: 22px;
+}
+
+input {
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #00D4FF;
+    border-radius: 5px;
+    background: #0F1A2B;
+    color: #E0E7FF;
+    width: calc(100% - 34px);
+    font-size: 22px;
+    box-sizing: border-box;
+    overflow: visible;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+select {
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #00D4FF;
+    border-radius: 5px;
+    background: #0F1A2B;
+    color: #E0E7FF;
+    width: 100%;
+    font-size: 22px;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2300D4FF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+select option {
+    white-space: normal;
+    padding: 5px;
+    min-width: 300px;
+}
+
+#login-container, #student-container, #staff-container, #admin-container, #parent-container {
+    max-width: 1200px;
+    width: 100%;
+    background: #0F1A2B;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #00D4FF;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.product-item {
+    background: #1A2F3B;
+    padding: 15px;
+    border-radius: 5px;
+    width: calc(33% - 15px);
+    font-size: 22px;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.sales-table th, .sales-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #00D4FF;
+    font-size: 22px;
+}
+
+.sales-table th {
+    background: #00D4FF;
+    color: #0F1A2B;
+}
+
+.sales-table tbody tr:hover {
+    background: #1A2F3B;
+}
+
+.user-list-container {
+    display: flex;
+    gap: 20px;
+}
+
+.user-list {
+    width: 30%;
+    max-height: 500px;
+    overflow-y: auto;
+    background: #0F1A2B;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #00D4FF;
+}
+
+.user-list h4 {
+    color: #00FF99;
+    margin-bottom: 10px;
+}
+
+.user-list button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    background: #1A2F3B;
+    color: #E0E7FF;
+    text-align: left;
+    padding: 12px;
+    font-size: 22px;
+}
+
+.user-list button:hover {
+    background: #00D4FF;
+    color: #0F1A2B;
+}
+
+.user-details-panel {
+    width: 70%;
+    background: #0F1A2B;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #00D4FF;
+}
+
+.user-item {
+    margin: 12px 0;
+    font-size: 22px;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form-section {
+    width: 48%;
+    background: #0F1A2B;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #00D4FF;
+}
+
+.form-section h4 {
+    color: #00FF99;
+    margin-bottom: 15px;
+}
+
+.student-only.hidden {
+    display: none;
+}
+
+.indicator-section {
+    margin: 20px 0;
+    background: #0F1A2B;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #00D4FF;
+    font-size: 22px;
+}
