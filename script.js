@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3002";
+// API_URL dinamik olarak ayarlanacak
+const API_URL = window.location.origin; // 🌟 Dinamik olarak Render'ın verdiği base URL alınır
 let currentUser = null;
 let cart = [];
 
@@ -15,6 +16,7 @@ function showNotification(message) {
         notification.remove();
     }, 4000);
 }
+
 
 function login() {
     const userType = document.getElementById("user-type").value;
