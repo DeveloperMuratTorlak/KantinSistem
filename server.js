@@ -30,6 +30,7 @@ app.listen(port, () => {
 });
 
 
+
 db.serialize(() => {
     db.run("DROP TABLE IF EXISTS students");
     db.run("DROP TABLE IF EXISTS staff");
