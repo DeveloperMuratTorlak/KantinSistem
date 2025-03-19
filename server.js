@@ -5,15 +5,39 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3002;
 
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
-console.log("Sunucu başlatılıyor...");
+
+console.log("🚀 Sunucu başlatılıyor...");
 
 const db = new sqlite3.Database("./kantin.db", (err) => {
-    if (err) console.error("Veritabanı hatası:", err.message);
-    else console.log("Veritabanına bağlandı.");
+    if (err) {
+        console.error("❌ Veritabanı hatası:", err.message);
+    } else {
+        console.log("✅ Veritabanına başarıyla bağlandı.");
+    }
+});
+
+// 🌟 Root endpoint eklendi
+app.get("/", (req, res) => {
+    res.send("✅ Sunucu Çalışıyor!");
+});
+
+// 🌟 Örnek API Endpoint (opsiyonel)
+app.get("/api/kantin", (req, res) => {
+    db.all("SELECT * FROM urunler", [], (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json(rows);
+    });
+});
+
+// Sunucuyu başlat
+app.listen(port, () => {
+    console.log(`✅ Sunucu ${port} portunda çalışıyor: http://localhost:${port}`);
 });
 
 db.serialize(() => {
