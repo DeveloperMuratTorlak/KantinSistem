@@ -29,7 +29,9 @@ app.listen(port, () => {
     console.log(`✅ Sunucu ${port} portunda çalışıyor.`);
 });
 
-
+app.get("/", (req, res) => {
+    res.sendFile("index.html", { root: "public" });
+});
 
 db.serialize(() => {
     db.run("DROP TABLE IF EXISTS students");
